@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libmdbx.Mac.Samples", "Libmdbx.Mac.Samples\Libmdbx.Mac.Samples.csproj", "{83EC3675-EB3B-480D-9A0B-FAA5AEA0A5CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libmdbx.Net.Mac", "..\Libmdbx.Net\Libmdbx.Net.Mac\Libmdbx.Net.Mac.csproj", "{65E7DCB5-6EFD-4747-BAAB-EAD3FDDFAA63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libmdbx.Net.Core", "..\Libmdbx.Net\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj", "{191E65A7-5633-484E-930C-AAD316394FB7}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Libmdbx.Net.Shared", "..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.shproj", "{C4F32692-C1FA-490C-85C3-5311199EE30A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83EC3675-EB3B-480D-9A0B-FAA5AEA0A5CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83EC3675-EB3B-480D-9A0B-FAA5AEA0A5CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83EC3675-EB3B-480D-9A0B-FAA5AEA0A5CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83EC3675-EB3B-480D-9A0B-FAA5AEA0A5CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65E7DCB5-6EFD-4747-BAAB-EAD3FDDFAA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65E7DCB5-6EFD-4747-BAAB-EAD3FDDFAA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65E7DCB5-6EFD-4747-BAAB-EAD3FDDFAA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65E7DCB5-6EFD-4747-BAAB-EAD3FDDFAA63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191E65A7-5633-484E-930C-AAD316394FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191E65A7-5633-484E-930C-AAD316394FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191E65A7-5633-484E-930C-AAD316394FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191E65A7-5633-484E-930C-AAD316394FB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E68A2BB0-A122-4723-89BD-EBA0715687A5}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{65e7dcb5-6efd-4747-baab-ead3fddfaa63}*SharedItemsImports = 4
+		..\..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{c4f32692-c1fa-490c-85c3-5311199ee30a}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

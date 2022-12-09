@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libmdbx.Net.Core", "..\..\..\..\lmdb\libmdbx.bindings\Src\Libmdbx.Net\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj", "{090031F7-A39A-49E8-861A-3C585EB3D37E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Libmdbx.Net.Shared", "..\..\..\..\lmdb\libmdbx.bindings\Src\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.shproj", "{C4F32692-C1FA-490C-85C3-5311199EE30A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{090031F7-A39A-49E8-861A-3C585EB3D37E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090031F7-A39A-49E8-861A-3C585EB3D37E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090031F7-A39A-49E8-861A-3C585EB3D37E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090031F7-A39A-49E8-861A-3C585EB3D37E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0BA0BA24-26F6-4FE1-8E73-B2248AC5B203}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\..\..\lmdb\libmdbx.bindings\Src\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{c4f32692-c1fa-490c-85c3-5311199ee30a}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

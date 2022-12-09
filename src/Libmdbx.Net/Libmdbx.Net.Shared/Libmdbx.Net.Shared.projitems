@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>c4f32692-c1fa-490c-85c3-5311199ee30a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Libmdbx.Net.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\Const.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\MdbxCursor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\MdbxDb.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\MdbxDbVal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\MdbxEnv.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\MdbxEnvInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\MdbxError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bindings\MdbxTran.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cursor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CursorFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DatabaseOpenFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DatabasePutFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbiState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Env.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnvFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Info.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LibmdbxException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LibmdbxExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LibmdbxResultCode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LibmdbxResultCodeFlag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MoveOperation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PutMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Txn.cs" />
+  </ItemGroup>
+</Project>
