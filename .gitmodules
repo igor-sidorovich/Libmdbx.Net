@@ -1,0 +1,3 @@
+[submodule "src/build_source/libmdbx-native/libmdbx-source"]
+	path = src/build_source/libmdbx-native/libmdbx-source
+	url = https://gitflic.ru/project/erthink/libmdbx.git
