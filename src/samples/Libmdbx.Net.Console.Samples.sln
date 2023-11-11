@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libmdbx.Net.Core", "..\Libm
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Libmdbx.Net.Shared", "..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.shproj", "{C4F32692-C1FA-490C-85C3-5311199EE30A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libmdbx.Net.NetStandard", "..\Libmdbx.Net\Libmdbx.Net.NetStandard\Libmdbx.Net.NetStandard.csproj", "{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,26 +63,6 @@ Global
 		{0E20A1A1-4C2D-4856-8A22-E662FD32A71D}.Release|x64.Build.0 = Release|Any CPU
 		{0E20A1A1-4C2D-4856-8A22-E662FD32A71D}.Release|x86.ActiveCfg = Release|Any CPU
 		{0E20A1A1-4C2D-4856-8A22-E662FD32A71D}.Release|x86.Build.0 = Release|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|x64.ActiveCfg = Debug|x64
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|x64.Build.0 = Debug|x64
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|x86.ActiveCfg = Debug|x86
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Debug|x86.Build.0 = Debug|x86
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|ARM32.Build.0 = Release|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|ARM64.Build.0 = Release|Any CPU
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|x64.ActiveCfg = Release|x64
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|x64.Build.0 = Release|x64
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|x86.ActiveCfg = Release|x86
-		{93A19EF5-307F-46C6-A80C-CBD9AFCC4FBD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,7 +71,7 @@ Global
 		SolutionGuid = {AF3A9229-E3D4-4C67-8BCF-62F49CE097FB}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{93a19ef5-307f-46c6-a80c-cbd9afcc4fbd}*SharedItemsImports = 5
+		..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{ac58556d-71be-4573-9abd-54d167aee6d9}*SharedItemsImports = 5
 		..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{c4f32692-c1fa-490c-85c3-5311199ee30a}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

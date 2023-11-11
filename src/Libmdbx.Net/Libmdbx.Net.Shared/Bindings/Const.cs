@@ -3,7 +3,6 @@
     public static class Const
     {
 #if IOS || __IOS__
-
         public const string LibMdbxName = "@rpath/libmdbx.framework/libmdbx";
 #else
         public const string LibMdbxName = "mdbx";

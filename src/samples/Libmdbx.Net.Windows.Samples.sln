@@ -5,11 +5,11 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libmdbx.Windows.Samples", "Libmdbx.Windows.Samples\Libmdbx.Windows.Samples.csproj", "{4EB2EE20-6FF0-49F5-A47A-D94EA54D0B0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libmdbx.Net.NetFramework", "..\Libmdbx.Net\Libmdbx.Net.NetFramework\Libmdbx.Net.NetFramework.csproj", "{FC9ACF48-9EBD-42AD-80CF-1D366C848026}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libmdbx.Net.Core", "..\Libmdbx.Net\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj", "{B599BE9B-773D-426A-9FA4-3A4904738A87}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Libmdbx.Net.Shared", "..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.shproj", "{C4F32692-C1FA-490C-85C3-5311199EE30A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libmdbx.Net.Windows", "..\Libmdbx.Net\Libmdbx.Net.Windows\Libmdbx.Net.Windows.csproj", "{FC9ACF48-9EBD-42AD-80CF-1D366C848026}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,18 +33,6 @@ Global
 		{4EB2EE20-6FF0-49F5-A47A-D94EA54D0B0A}.Release|x64.Build.0 = Release|x64
 		{4EB2EE20-6FF0-49F5-A47A-D94EA54D0B0A}.Release|x86.ActiveCfg = Release|x86
 		{4EB2EE20-6FF0-49F5-A47A-D94EA54D0B0A}.Release|x86.Build.0 = Release|x86
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x64.ActiveCfg = Debug|x64
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x64.Build.0 = Debug|x64
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x86.ActiveCfg = Debug|x86
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x86.Build.0 = Debug|x86
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x64.ActiveCfg = Release|x64
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x64.Build.0 = Release|x64
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x86.ActiveCfg = Release|x86
-		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x86.Build.0 = Release|x86
 		{B599BE9B-773D-426A-9FA4-3A4904738A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B599BE9B-773D-426A-9FA4-3A4904738A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B599BE9B-773D-426A-9FA4-3A4904738A87}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -57,6 +45,18 @@ Global
 		{B599BE9B-773D-426A-9FA4-3A4904738A87}.Release|x64.Build.0 = Release|Any CPU
 		{B599BE9B-773D-426A-9FA4-3A4904738A87}.Release|x86.ActiveCfg = Release|Any CPU
 		{B599BE9B-773D-426A-9FA4-3A4904738A87}.Release|x86.Build.0 = Release|Any CPU
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x64.ActiveCfg = Debug|x64
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x64.Build.0 = Debug|x64
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x86.ActiveCfg = Debug|x86
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Debug|x86.Build.0 = Debug|x86
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x64.ActiveCfg = Release|x64
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x64.Build.0 = Release|x64
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x86.ActiveCfg = Release|x86
+		{FC9ACF48-9EBD-42AD-80CF-1D366C848026}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -100,9 +100,9 @@
       <Project>{b599be9b-773d-426a-9fa4-3a4904738a87}</Project>
       <Name>Libmdbx.Net.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libmdbx.Net\Libmdbx.Net.NetFramework\Libmdbx.Net.NetFramework.csproj">
+    <ProjectReference Include="..\..\Libmdbx.Net\Libmdbx.Net.Windows\Libmdbx.Net.Windows.csproj">
       <Project>{fc9acf48-9ebd-42ad-80cf-1d366c848026}</Project>
-      <Name>Libmdbx.Net.NetFramework</Name>
+      <Name>Libmdbx.Net.Windows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

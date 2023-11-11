@@ -6,12 +6,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
+	  <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+	  <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+	  <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
 	  <Platforms>AnyCPU;x86;x64;ARM32;ARM64</Platforms>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Libmdbx.Net\Libmdbx.Net.NetStandard\Libmdbx.Net.NetStandard.csproj" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(IsWindows)'=='true'">
+		<DefineConstants>WINDOWS</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(IsOSX)'=='true'">
+		<DefineConstants>OSX</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(IsLinux)'=='true'">
+		<DefineConstants>LINUX</DefineConstants>
+	</PropertyGroup>
 
 	<ItemGroup Condition="('$(Platform)' == 'x86' or '$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU') and ('$([MSBuild]::IsOsPlatform(Windows))')">
 		<Content Include="..\..\native\windows\$(Platform)\*.dll">
@@ -25,5 +34,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Libmdbx.Net\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj" />
+	</ItemGroup>
+	<Import Project="..\..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems" Label="Shared" />
 
 </Project>

@@ -139,19 +139,21 @@
     <ProjectReference Include="..\..\Libmdbx.Net\Libmdbx.Net.Ios\Libmdbx.Net.Ios.csproj">
       <Project>{ff91e9a4-0bc7-4ca8-9943-581e093984d3}</Project>
       <Name>Libmdbx.Net.Ios</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
-	<ItemGroup Condition="'$(Platform)' == 'iPhone'">
-		<NativeReference Include="..\..\native\osx\ios\iphone\libmdbx.framework">
-			<Kind>Framework</Kind>
-			<SmartLink>True</SmartLink>
-		</NativeReference>
-	</ItemGroup>
-	<ItemGroup Condition="'$(Platform)' == 'iPhoneSimulator'">
-		<NativeReference Include="..\..\native\osx\ios\simulator\libmdbx.framework">
-			<Kind>Framework</Kind>
-			<SmartLink>True</SmartLink>
-		</NativeReference>
-	</ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'iPhone'">
+    <NativeReference Include="..\..\native\osx\ios\iphone\libmdbx.framework">
+      <Kind>Framework</Kind>
+      <SmartLink>True</SmartLink>
+    </NativeReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'iPhoneSimulator'">
+    <NativeReference Include="..\..\native\osx\ios\simulator\libmdbx.framework">
+      <Kind>Framework</Kind>
+      <SmartLink>True</SmartLink>
+    </NativeReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

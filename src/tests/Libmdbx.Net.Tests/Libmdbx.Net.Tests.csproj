@@ -6,6 +6,9 @@
 
     <IsPackable>false</IsPackable>
 
+	  <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+	  <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+	  <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
     <Platforms>AnyCPU;ARM64;ARM32;x64;x86</Platforms>
   </PropertyGroup>
 
@@ -49,6 +52,16 @@
     <DefineConstants>$(DefineConstants)TRACE;_WIN64;</DefineConstants>
   </PropertyGroup>
 
+	<PropertyGroup Condition="'$(IsWindows)'=='true'">
+		<DefineConstants>WINDOWS</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(IsOSX)'=='true'">
+		<DefineConstants>OSX</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(IsLinux)'=='true'">
+		<DefineConstants>LINUX</DefineConstants>
+	</PropertyGroup>
+
 	<ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -74,9 +87,10 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\..\lmdb\libmdbx.bindings\Src\Libmdbx.Net\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj" />
-	  <ProjectReference Include="..\..\..\..\..\lmdb\libmdbx.bindings\Src\Libmdbx.Net\Libmdbx.Net.NetStandard\Libmdbx.Net.NetStandard.csproj" />
+	  <ProjectReference Include="..\..\Libmdbx.Net\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj" />
 	</ItemGroup>
+	<Import Project="..\..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems" Label="Shared" />
 
 </Project>

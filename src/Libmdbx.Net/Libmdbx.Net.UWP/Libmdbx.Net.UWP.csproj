@@ -126,27 +126,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Libmdbx.UWP.rd.xml" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='X86'">
-    <Content Include="..\..\native\windows\x86\mdbx.dll">
-      <Link>mdbx.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='X64'">
-    <Content Include="..\..\native\windows\X64\mdbx.dll">
-      <Link>mdbx.dll</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='ARM64'">
-    <Content Include="..\..\native\windows\ARM64\mdbx.dll">
-      <Link>mdbx.dll</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='AnyCPU'">
-    <Content Include="..\..\native\windows\x64\mdbx.dll">
-      <Link>mdbx.dll</Link>
-    </Content>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj">
       <Project>{a6b2237d-e854-43c4-8697-02c996d1cff6}</Project>
@@ -162,11 +141,4 @@
     <PostBuildEvent>copy "$(TargetPath)" "$(TargetDir)$(TargetName).ref$(TargetExt)" /y 
 "c:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\corflags.exe" /32BITREQ- "$(TargetDir)$(TargetName).ref$(TargetExt)"</PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
-using System.Security.AccessControl;
 using Android.App;
 using Android.Content.PM;
-using Android.Drm;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;

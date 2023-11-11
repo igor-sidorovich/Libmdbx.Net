@@ -65,7 +65,7 @@ Global
 		SolutionGuid = {18552F64-E8A5-46DC-8484-4C6D1EA9F226}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{c4f32692-c1fa-490c-85c3-5311199ee30a}*SharedItemsImports = 13
-		..\..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{ff91e9a4-0bc7-4ca8-9943-581e093984d3}*SharedItemsImports = 4
+		..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{c4f32692-c1fa-490c-85c3-5311199ee30a}*SharedItemsImports = 13
+		..\Libmdbx.Net\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems*{ff91e9a4-0bc7-4ca8-9943-581e093984d3}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

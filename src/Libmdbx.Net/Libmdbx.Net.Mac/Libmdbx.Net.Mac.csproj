@@ -56,10 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Libmdbx.Net.Core\Libmdbx.Net.Core.csproj">
-      <Project>{A6B2237D-E854-43C4-8697-02C996D1CFF6}</Project>
+      <Project>{540ece0d-d47f-41df-9e11-0c2a17298c9e}</Project>
       <Name>Libmdbx.Net.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems" Label="Shared" Condition="Exists('..\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems')" />
+  <Import Project="..\Libmdbx.Net.Shared\Libmdbx.Net.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>
