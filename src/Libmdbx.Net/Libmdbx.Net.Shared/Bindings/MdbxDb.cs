@@ -158,7 +158,7 @@ namespace Libmdbx.Net.Bindings
         public static extern LibmdbxResultCodeFlag mdbx_get(IntPtr txn,
                                           [In, MarshalAs(UnmanagedType.U4)] uint dbi,
                                           ref MdbxDbVal key,
-                                          ref MdbxDbVal value);
+                                          out MdbxDbVal value);
 
         /// <summary>
         /// int mdbx_get_ex(MDBX_txn* Txn, MDBX_dbi dbi, MDBX_val* key, MDBX_val* data, size_t* values_count)
@@ -187,8 +187,8 @@ namespace Libmdbx.Net.Bindings
         public static extern LibmdbxResultCodeFlag mdbx_get_ex(IntPtr txn,
                                             [In, MarshalAs(UnmanagedType.U4)] uint dbi,
                                             ref MdbxDbVal key,
-                                            ref MdbxDbVal value,
-                                            ref UIntPtr values_count);
+                                            out MdbxDbVal value,
+                                            ref uint values_count);
 
         /// <summary>
         /// int mdbx_replace(MDBX_txn* Txn, MDBX_dbi dbi, const MDBX_val* key, MDBX_val* new_data, MDBX_val* old_data, MDBX_put_flags_t Flags)

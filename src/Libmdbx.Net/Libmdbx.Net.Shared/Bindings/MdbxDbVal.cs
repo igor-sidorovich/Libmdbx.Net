@@ -6,15 +6,17 @@ namespace Libmdbx.Net.Bindings
     [StructLayout(LayoutKind.Sequential)]
     public struct MdbxDbVal
     {
-        public IntPtr addr;
-        public IntPtr size;
+        internal unsafe byte* addr;
+        internal IntPtr size;
 
-        public int Length => size.ToInt32();
-
-        internal MdbxDbVal(IntPtr addr, int size)
+        internal unsafe MdbxDbVal(byte* pinnedOrStackAllocBuffer, int bufferSize)
         {
-            this.addr = addr;
-            this.size = IntPtr.Add(IntPtr.Zero, size);
+            addr = pinnedOrStackAllocBuffer;
+            size = (IntPtr)bufferSize;
         }
+
+        public unsafe ReadOnlySpan<byte> AsSpan() => new ReadOnlySpan<byte>((void*)this.addr, (int)this.size);
+
+        public byte[] CopyToNewArray() => this.AsSpan().ToArray();
     }
 }

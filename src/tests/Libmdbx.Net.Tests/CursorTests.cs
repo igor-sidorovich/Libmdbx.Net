@@ -316,7 +316,7 @@ namespace Libmdbx.Tests
             using (IEnv env = new Env(path, createParameters, operateParameters))
             {
                 int[] keys = { 0, 2, 3, 4, 5, 6, 7, 8 };
-                string[] values = { "", "2", "3", "4", "5", "6", "7", "8" };
+                string[] values = { "1", "2", "3", "4", "5", "6", "7", "8" };
 
                 using (ITxn trx = env.StartWrite())
                 {

@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Text;
 using Libmdbx.Net;
 using Libmdbx.Net.Core.Common;
 using Libmdbx.Net.Core.Env;
@@ -6,30 +8,34 @@ using Libmdbx.Net.Core.Transaction;
 using Libmdbx.Net.Shared;
 
 string path;
-string db_name = "mdbx-test.db";
+string dbName = "mdbx-test.db";
 var envFactory = new EnvFactory();
 
+for (int i = 0; i < 21; i++)
+{
+    InsertPerformanceCompare(i);
+}
+
 //Create example which close/dispose env until transaction in progress
-//
-EnvDynamicGrowthExample();
-await ReadDataParallelFromDifferentThreadsUsingTheSameEnvironment();
-await ReadDataParallelFromDifferentThreadsUsingDifferentEnvironmentsExclusiveMode();
-await ReadDataParallelFromDifferentThreadsUsingOneEnvironmentNotExclusiveMode();//we use current approach on a bingo
-await ReadDataDuringUpdateData();
-await DemonstrateMvccApproach();
-await WriteDataParallelFromDifferentThreadsUsingTheSameEnvironment();
-await CloseEnvDuringWrite();
-await CloseEnvDuringRead();
+//EnvDynamicGrowthExample();
+//await ReadDataParallelFromDifferentThreadsUsingTheSameEnvironment();
+//await ReadDataParallelFromDifferentThreadsUsingDifferentEnvironmentsExclusiveMode();
+//await ReadDataParallelFromDifferentThreadsUsingOneEnvironmentNotExclusiveMode();//we use current approach on a bingo
+//await ReadDataDuringUpdateData();
+//await DemonstrateMvccApproach();
+//await WriteDataParallelFromDifferentThreadsUsingTheSameEnvironment();
+//await CloseEnvDuringWrite();
+//await CloseEnvDuringRead();
 
 void RemoveDbFile()
 {
     path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty, "mdbx");
     if (Directory.Exists(path))
     {
-        envFactory.Remove(Path.Combine(path, db_name));
+        envFactory.Remove(Path.Combine(path, dbName));
     }
     Directory.CreateDirectory(path);
-    path = Path.Combine(path, db_name);
+    path = Path.Combine(path, dbName);
 }
 
 Dictionary<string, string> BuildKeyValues(int range)
@@ -42,6 +48,69 @@ Dictionary<string, string> BuildKeyValues(int range)
     }
 
     return dict;
+}
+
+
+void InsertPerformanceCompare(int iterator)
+{
+    RemoveDbFile();
+
+    var lowerSize = Geometry.MinimalValue;
+    var upperSize = new IntPtr((int)Geometry.Size.MB * 500);
+
+    var geometry = Geometry.make_dynamic(lowerSize, upperSize);
+    var createParameters = new CreateParameters(geometry);
+
+    uint maxMaps = 1;
+    uint maxReaders = 1;
+
+    var operateParameters = new OperateParameters(maxMaps, maxReaders, reclaiming: new ReclaimingOptions(lifo: false), options: new OperateOptions(orphanReadTransactions: true, exclusive: true));
+
+    using (IEnv env = envFactory.Create(path, createParameters, operateParameters))
+    {
+        using (ITxn trx = env.StartWrite())
+        {
+            var map = trx.CreateMap("test", KeyMode.Usual, ValueMode.Single);
+
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+
+            for (int i = 0; i < 5000; i++)
+            {
+                trx.Insert(map, $"builtin/features/popups/shared/duplicate_collection_item_convert/test/{i}/key", i);
+            }
+
+            trx.Commit();
+
+            var elapsed = stopwatch.ElapsedMilliseconds;
+            stopwatch.Stop();
+
+            Console.WriteLine($"{iterator} - {elapsed}");
+
+            //Close a database handle. Normally unnecessary.
+            //Closing a database handle is not necessary, but lets mdbx_dbi_open() reuse the handle value. Usually it's better to set a bigger mdbx_env_set_maxdbs(), unless that value would be large.
+            //env.CloseMap(map);
+        }
+
+        using (ITxn trx = env.StartRead())
+        {
+            var openMap = trx.OpenMap("test", KeyMode.Usual, ValueMode.Single);
+
+            for (int i = 0; i < 5000; i++)
+            {
+                var value = trx.Get<string, int>(openMap, $"builtin/features/popups/shared/duplicate_collection_item_convert/test/{i}/key");
+                if (value != i)
+                {
+                    Console.WriteLine($"Get failed for - {i}");
+                }
+            }
+
+            trx.Commit();
+        }
+    }
+
+    //Console.WriteLine($"Finish example {nameof(InsertPerformanceCompare)}");
 }
 
 /// <summary>
@@ -74,6 +143,12 @@ void EnvDynamicGrowthExample()
 
             for (int i = 0; i < 1000000; i++)
             {
+                if (i % 100000 == 0)
+                {
+                    FileInfo fileInfo1 = new FileInfo(path);
+                    var length1 = fileInfo1.Length;
+                    Console.WriteLine($"File length - {length1}");
+                }
                 trx.Insert(map, i, i);
             }
 
@@ -87,6 +162,7 @@ void EnvDynamicGrowthExample()
 
     FileInfo fileInfo = new FileInfo(path);
     var length = fileInfo.Length;
+    Console.WriteLine($"File length - {length}");
 
     Console.WriteLine($"Finish example {nameof(EnvDynamicGrowthExample)}");
 }

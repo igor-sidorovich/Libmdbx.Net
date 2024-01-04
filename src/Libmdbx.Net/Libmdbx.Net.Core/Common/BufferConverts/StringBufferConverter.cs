@@ -24,5 +24,18 @@ namespace Libmdbx.Net.Core.Common.BufferConverts
 
             return Encoding.UTF8.GetString(buffer);
         }
+
+        public unsafe string ConvertFromBuffer(ReadOnlySpan<byte> buffer)
+        {
+            if (buffer == default || buffer.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            fixed (byte* strPtr = buffer)
+            {
+                return Encoding.UTF8.GetString(strPtr, buffer.Length);
+            }
+        }
     }
 }

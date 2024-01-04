@@ -147,8 +147,7 @@ namespace Libmdbx.Net
 
         protected bool Seek(ref MdbxDbVal key)
         {
-            MdbxDbVal dbValue = new MdbxDbVal(IntPtr.Zero, 0);
-
+            MdbxDbVal dbValue = new MdbxDbVal();
             return Move(MoveOperation.FindKey, ref key, ref dbValue, false);
         }
 
@@ -157,204 +156,85 @@ namespace Libmdbx.Net
             return mdbx_cursor_put(_cursorPtr, ref key, ref value, flags);
         }
 
-        protected bool Move<TK>(MoveOperation op, TK key, bool throwNotFound)
+        protected unsafe LibmdbxResultCodeFlag Put<TK, TV>(TK key, TV value, DatabasePutFlags flags)
         {
-            IntPtr keyPtr = IntPtr.Zero;
+            var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
+            var valueBuffer = BufferConverterFactory.Get<TV>().ConvertToBuffer(value);
 
+            fixed (byte* keyPtr = keyBuffer)
+            fixed (byte* valuePtr = valueBuffer)
+            {
+                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer.Length);
+                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer.Length);
+
+                return mdbx_cursor_put(_cursorPtr, ref dbKey, ref dbValue, flags);
+            }
+        }
+
+        protected unsafe bool Move<TK>(MoveOperation op, TK key, bool throwNotFound)
+        {
             var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
 
-            try
+            fixed (byte* keyPtr = keyBuffer)
             {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(IntPtr.Zero, 0);
+                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer.Length);
+                MdbxDbVal dbValue = new MdbxDbVal();
 
                 return Move(op, ref dbKey, ref dbValue, throwNotFound);
-            }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
             }
         }
 
         protected bool Move<TK, TV>(MoveOperation op, out CursorResult<TK, TV> cursorResult, bool throwNotFound)
         {
-            cursorResult = default;
+            MdbxDbVal dbKey = new MdbxDbVal();
+            MdbxDbVal dbValue = new MdbxDbVal();
 
-            MdbxDbVal dbKey = new MdbxDbVal(IntPtr.Zero, 0);
-            MdbxDbVal dbValue = new MdbxDbVal(IntPtr.Zero, 0);
-
-            var moveResult = Move(op, ref dbKey, ref dbValue, throwNotFound);
-
-            if (moveResult)
-            {
-                byte[] keyBuffer = default;
-                byte[] valueBuffer = default;
-
-                if (dbKey.addr != IntPtr.Zero)
-                {
-                    keyBuffer = new byte[dbKey.Length];
-                    Marshal.Copy(dbKey.addr, keyBuffer, 0, keyBuffer.Length);
-                }
-
-                if (dbValue.addr != IntPtr.Zero)
-                {
-                    valueBuffer = new byte[dbValue.Length];
-                    Marshal.Copy(dbValue.addr, valueBuffer, 0, valueBuffer.Length);
-                }
-
-                TK key = keyBuffer != default ? BufferConverterFactory.Get<TK>().ConvertFromBuffer(keyBuffer) : default;
-                TV value = valueBuffer != default ? BufferConverterFactory.Get<TV>().ConvertFromBuffer(valueBuffer) : default;
-
-                cursorResult = new CursorResult<TK, TV>(key, value);
-            }
-
-            return moveResult;
+            return Move(op, out cursorResult, dbKey, dbValue, throwNotFound);
         }
 
-        protected bool Move<TK, TV>(MoveOperation op, out CursorResult<TK, TV> cursorResult, TK key, bool throwNotFound)
+        protected unsafe bool Move<TK, TV>(MoveOperation op, out CursorResult<TK, TV> cursorResult, TK key, bool throwNotFound)
         {
-            cursorResult = default;
-            bool moveResult;
-            IntPtr keyPtr = IntPtr.Zero;
-
             var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
 
-            try
+            fixed (byte* keyPtr = keyBuffer)
             {
-                byte[] valueBuffer = default;
+                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer.Length);
+                MdbxDbVal dbValue = new MdbxDbVal();
 
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(IntPtr.Zero, 0);
-
-                moveResult = Move(op, ref dbKey, ref dbValue, throwNotFound);
-                if (moveResult)
-                {
-                    if (dbKey.addr != IntPtr.Zero)
-                    {
-                        if (keyBuffer == default || keyBuffer.Length != dbKey.Length)
-                        {
-                            keyBuffer = new byte[dbKey.Length];
-                        }
-
-                        Marshal.Copy(dbKey.addr, keyBuffer, 0, keyBuffer.Length);
-                    }
-                    else
-                    {
-                        keyBuffer = default;
-                    }
-
-                    if (dbValue.addr != IntPtr.Zero)
-                    {
-                        valueBuffer = new byte[dbValue.Length];
-                        Marshal.Copy(dbValue.addr, valueBuffer, 0, valueBuffer.Length);
-                    }
-
-                    TK cursorKey = keyBuffer != default ? BufferConverterFactory.Get<TK>().ConvertFromBuffer(keyBuffer) : default;
-                    TV cursorValue = valueBuffer != default ? BufferConverterFactory.Get<TV>().ConvertFromBuffer(valueBuffer) : default;
-
-                    cursorResult = new CursorResult<TK, TV>(cursorKey, cursorValue);
-                }
+                return Move(op, out cursorResult, dbKey, dbValue, throwNotFound);
             }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
-            }
-
-            return moveResult;
         }
 
-        protected bool Move<TK, TV>(MoveOperation op, out CursorResult<TK, TV> cursorResult, TK key, TV value, bool throwNotFound)
+        protected unsafe bool Move<TK, TV>(MoveOperation op, out CursorResult<TK, TV> cursorResult, TK key, TV value, bool throwNotFound)
         {
-            cursorResult = default;
-            bool moveResult;
-
-            IntPtr keyPtr = IntPtr.Zero;
-            IntPtr valuePtr = IntPtr.Zero;
-
             var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
             var valueBuffer = BufferConverterFactory.Get<TV>().ConvertToBuffer(value);
 
-            try
+            fixed (byte* keyPtr = keyBuffer)
+            fixed (byte* valuePtr = valueBuffer)
             {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
+                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer.Length);
+                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer.Length);
 
-                if (valueBuffer != default && valueBuffer.Length > 0)
-                {
-                    valuePtr = Marshal.AllocHGlobal(valueBuffer.Length);
-                    Marshal.Copy(valueBuffer, 0, valuePtr, valueBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer?.Length ?? 0);
-
-                moveResult = Move(op, ref dbKey, ref dbValue, throwNotFound);
-                if (moveResult)
-                {
-                    if (dbKey.addr != IntPtr.Zero)
-                    {
-                        if (keyBuffer == default || keyBuffer.Length != dbKey.Length)
-                        {
-                            keyBuffer = new byte[dbKey.Length];
-                        }
-
-                        Marshal.Copy(dbKey.addr, keyBuffer, 0, keyBuffer.Length);
-                    }
-                    else
-                    {
-                        keyBuffer = default;
-                    }
-
-                    if (dbValue.addr != IntPtr.Zero)
-                    {
-                        if (valueBuffer == default || valueBuffer.Length != dbValue.Length)
-                        {
-                            valueBuffer = new byte[dbValue.Length];
-                        }
-
-                        Marshal.Copy(dbValue.addr, valueBuffer, 0, valueBuffer.Length);
-                    }
-                    else
-                    {
-                        valueBuffer = default;
-                    }
-
-                    TK cursorKey = keyBuffer != default ? BufferConverterFactory.Get<TK>().ConvertFromBuffer(keyBuffer) : default;
-                    TV cursorValue = valueBuffer != default ? BufferConverterFactory.Get<TV>().ConvertFromBuffer(valueBuffer) : default;
-
-                    cursorResult = new CursorResult<TK, TV>(cursorKey, cursorValue);
-                }
+                return Move(op, out cursorResult, dbKey, dbValue, throwNotFound);
             }
-            finally
+        }
+
+        protected bool Move<TK, TV>(MoveOperation op, out CursorResult<TK, TV> cursorResult, MdbxDbVal key, MdbxDbVal value, bool throwNotFound)
+        {
+            cursorResult = default;
+
+            if (!Move(op, ref key, ref value, throwNotFound))
             {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
+                return false;
             }
 
-            return moveResult;
+            TK returnKey = BufferConverterFactory.Get<TK>().ConvertFromBuffer(key.AsSpan());
+            TV returnValue = BufferConverterFactory.Get<TV>().ConvertFromBuffer(value.AsSpan());
+
+            cursorResult = new CursorResult<TK, TV>(returnKey, returnValue);
+
+            return true;
         }
 
         protected bool Move(MoveOperation op, ref MdbxDbVal key, ref MdbxDbVal value, bool throwNotFound)
@@ -382,94 +262,22 @@ namespace Libmdbx.Net
 
         public void Insert<TK, TV>(TK key, TV value)
         {
-            var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
-            var valueBuffer = BufferConverterFactory.Get<TV>().ConvertToBuffer(value);
-
-            IntPtr keyPtr = IntPtr.Zero;
-            IntPtr valuePtr = IntPtr.Zero;
-
-            try
-            {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                if (valueBuffer != default && valueBuffer.Length > 0)
-                {
-                    valuePtr = Marshal.AllocHGlobal(valueBuffer.Length);
-                    Marshal.Copy(valueBuffer, 0, valuePtr, valueBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer?.Length ?? 0);
-
-                Put(ref dbKey, ref dbValue, (DatabasePutFlags)PutMode.InsertUnique).ThrowException(nameof(Insert));
-            }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
-
-                if (valuePtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(valuePtr);
-                }
-            }
+            Put(key, value, (DatabasePutFlags)PutMode.InsertUnique).ThrowException(nameof(Insert));
         }
 
         public bool TryInsert<TK, TV>(TK key, TV value)
         {
-            var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
-            var valueBuffer = BufferConverterFactory.Get<TV>().ConvertToBuffer(value);
+            var err = Put(key, value, (DatabasePutFlags)PutMode.InsertUnique);
 
-            IntPtr keyPtr = IntPtr.Zero;
-            IntPtr valuePtr = IntPtr.Zero;
-
-            try
+            switch (err)
             {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                if (valueBuffer != default && valueBuffer.Length > 0)
-                {
-                    valuePtr = Marshal.AllocHGlobal(valueBuffer.Length);
-                    Marshal.Copy(valueBuffer, 0, valuePtr, valueBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer?.Length ?? 0);
-
-                var err = Put(ref dbKey, ref dbValue, (DatabasePutFlags)PutMode.InsertUnique);
-
-                switch (err)
-                {
-                    case LibmdbxResultCodeFlag.SUCCESS:
-                        return true;
-                    case LibmdbxResultCodeFlag.KEY_EXIST:
-                        return false;
-                    default:
-                        err.ThrowException(nameof(TryInsert));
-                        return false;
-                }
-            }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
-
-                if (valuePtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(valuePtr);
-                }
+                case LibmdbxResultCodeFlag.SUCCESS:
+                    return true;
+                case LibmdbxResultCodeFlag.KEY_EXIST:
+                    return false;
+                default:
+                    err.ThrowException(nameof(TryInsert));
+                    return false;
             }
         }
 
@@ -479,43 +287,7 @@ namespace Libmdbx.Net
 
         public void Upsert<TK, TV>(TK key, TV value)
         {
-            var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
-            var valueBuffer = BufferConverterFactory.Get<TV>().ConvertToBuffer(value);
-
-            IntPtr keyPtr = IntPtr.Zero;
-            IntPtr valuePtr = IntPtr.Zero;
-
-            try
-            {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                if (valueBuffer != default && valueBuffer.Length > 0)
-                {
-                    valuePtr = Marshal.AllocHGlobal(valueBuffer.Length);
-                    Marshal.Copy(valueBuffer, 0, valuePtr, valueBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer?.Length ?? 0);
-
-                Put(ref dbKey, ref dbValue, (DatabasePutFlags)PutMode.Upsert).ThrowException(nameof(Upsert));
-            }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
-
-                if (valuePtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(valuePtr);
-                }
-            }
+            Put(key, value, (DatabasePutFlags)PutMode.Upsert).ThrowException(nameof(Upsert));
         }
 
         #endregion
@@ -524,95 +296,23 @@ namespace Libmdbx.Net
 
         public void Update<TK, TV>(TK key, TV value)
         {
-            var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
-            var valueBuffer = BufferConverterFactory.Get<TV>().ConvertToBuffer(value);
-
-            IntPtr keyPtr = IntPtr.Zero;
-            IntPtr valuePtr = IntPtr.Zero;
-
-            try
-            {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                if (valueBuffer != default && valueBuffer.Length > 0)
-                {
-                    valuePtr = Marshal.AllocHGlobal(valueBuffer.Length);
-                    Marshal.Copy(valueBuffer, 0, valuePtr, valueBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer?.Length ?? 0);
-
-                Put(ref dbKey, ref dbValue, (DatabasePutFlags)PutMode.Update).ThrowException(nameof(Update));
-            }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
-
-                if (valuePtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(valuePtr);
-                }
-            }
+            Put(key, value, (DatabasePutFlags)PutMode.Update).ThrowException(nameof(Update));
         }
 
         public bool TryUpdate<TK, TV>(TK key, TV value)
         {
-            var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
-            var valueBuffer = BufferConverterFactory.Get<TV>().ConvertToBuffer(value);
+            var err = Put(key, value, (DatabasePutFlags)PutMode.Update);
 
-            IntPtr keyPtr = IntPtr.Zero;
-            IntPtr valuePtr = IntPtr.Zero;
-
-            try
+            switch (err)
             {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                if (valueBuffer != default && valueBuffer.Length > 0)
-                {
-                    valuePtr = Marshal.AllocHGlobal(valueBuffer.Length);
-                    Marshal.Copy(valueBuffer, 0, valuePtr, valueBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
-                MdbxDbVal dbValue = new MdbxDbVal(valuePtr, valueBuffer?.Length ?? 0);
-
-                var err = Put(ref dbKey, ref dbValue, (DatabasePutFlags)PutMode.Update);
-
-                switch (err)
-                {
-                    case LibmdbxResultCodeFlag.SUCCESS:
-                        return true;
-                    case LibmdbxResultCodeFlag.NOTFOUND:
-                    case LibmdbxResultCodeFlag.EKEYMISMATCH:
-                        return false;
-                    default:
-                        err.ThrowException(nameof(TryUpdate));
-                        return false;
-                }
-            }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
-
-                if (valuePtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(valuePtr);
-                }
+                case LibmdbxResultCodeFlag.SUCCESS:
+                    return true;
+                case LibmdbxResultCodeFlag.NOTFOUND:
+                case LibmdbxResultCodeFlag.EKEYMISMATCH:
+                    return false;
+                default:
+                    err.ThrowException(nameof(TryUpdate));
+                    return false;
             }
         }
 
@@ -620,30 +320,15 @@ namespace Libmdbx.Net
 
         #region EraseMulti
 
-        public bool Erase<TK>(TK key, bool wholeMultivalue = true)
+        public unsafe bool Erase<TK>(TK key, bool wholeMultivalue = true)
         {
             var keyBuffer = BufferConverterFactory.Get<TK>().ConvertToBuffer(key);
 
-            IntPtr keyPtr = IntPtr.Zero;
-
-            try
+            fixed (byte* keyPtr = keyBuffer)
             {
-                if (keyBuffer != default && keyBuffer.Length > 0)
-                {
-                    keyPtr = Marshal.AllocHGlobal(keyBuffer.Length);
-                    Marshal.Copy(keyBuffer, 0, keyPtr, keyBuffer.Length);
-                }
-
-                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer?.Length ?? 0);
+                MdbxDbVal dbKey = new MdbxDbVal(keyPtr, keyBuffer.Length);
 
                 return Erase(ref dbKey, wholeMultivalue);
-            }
-            finally
-            {
-                if (keyPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(keyPtr);
-                }
             }
         }
 
